@@ -7,7 +7,7 @@ import (
 
 	"github.com/dchest/uniuri"
 
-	uuid "github.com/satori/go.uuid"
+	uuid "github.com/google/uuid"
 
 	"github.com/stretchr/testify/require"
 
@@ -35,7 +35,7 @@ func TestSentryHappyPath(t *testing.T) {
 		IP:       uniuri.New(),
 	})
 	r.AddTag("endpoint", "TestSentryHappyPath")
-	r.AddTag("Req ID", uuid.NewV4().String())
+	r.AddTag("Req ID", uuid.Must(uuid.NewRandom()).String())
 
 	// send the request
 	r.ReportErrorAndWait(fmt.Errorf("New test error %s", uniuri.NewLen(4)))
@@ -56,7 +56,7 @@ func TestSentryNilUser(t *testing.T) {
 	// Set some data
 	r.SetUser(nil)
 	r.AddTag("endpoint", "TestSentryHappyPath")
-	r.AddTag("Req ID", uuid.NewV4().String())
+	r.AddTag("Req ID", uuid.Must(uuid.NewRandom()).String())
 
 	// send the request
 	r.ReportErrorAndWait(fmt.Errorf("New test error %s", uniuri.NewLen(4)))
